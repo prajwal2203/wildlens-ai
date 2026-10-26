@@ -1,0 +1,1910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>WildLens AI | AI Wildlife Explorer</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #07130d;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 75px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 7%;
+
+            background: rgba(5, 18, 11, 0.72);
+            backdrop-filter: blur(14px);
+
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            font-size: 25px;
+            font-weight: 800;
+        }
+
+        .logo span {
+            color: #8fd14f;
+        }
+
+        .logo-icon {
+            font-size: 30px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 35px;
+        }
+
+        nav ul a {
+            color: #ddd;
+            text-decoration: none;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+
+        nav ul a:hover {
+            color: #9ee15b;
+        }
+
+        .nav-button {
+            padding: 11px 20px;
+            border-radius: 25px;
+
+            background: #8bc34a;
+            color: #10200d !important;
+
+            font-weight: bold;
+        }
+
+        /* ================= HERO ================= */
+
+        .hero {
+            min-height: 100vh;
+
+            position: relative;
+
+            display: flex;
+            align-items: center;
+
+            padding: 130px 7% 70px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(3, 15, 8, 0.97) 0%,
+                    rgba(3, 15, 8, 0.82) 40%,
+                    rgba(3, 15, 8, 0.25) 75%,
+                    rgba(3, 15, 8, 0.7) 100%
+                ),
+                url("https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=2000&q=85");
+
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hero-content {
+            max-width: 680px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .tag {
+            display: inline-block;
+
+            padding: 8px 16px;
+            margin-bottom: 22px;
+
+            border-radius: 30px;
+
+            background: rgba(139, 195, 74, 0.15);
+            border: 1px solid rgba(139, 195, 74, 0.4);
+
+            color: #b4e477;
+            font-size: 14px;
+        }
+
+        .hero h1 {
+            font-size: clamp(50px, 7vw, 88px);
+            line-height: 0.95;
+            margin-bottom: 25px;
+            letter-spacing: -3px;
+        }
+
+        .hero h1 span {
+            color: #9bd75b;
+        }
+
+        .hero p {
+            max-width: 590px;
+            color: #d1d7d1;
+            font-size: 18px;
+            line-height: 1.7;
+            margin-bottom: 35px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .primary-btn,
+        .secondary-btn {
+            padding: 15px 25px;
+            border-radius: 30px;
+
+            text-decoration: none;
+            font-weight: bold;
+
+            transition: 0.3s;
+        }
+
+        .primary-btn {
+            background: #92d34f;
+            color: #10200d;
+        }
+
+        .primary-btn:hover {
+            transform: translateY(-3px);
+            background: #a9ed68;
+        }
+
+        .secondary-btn {
+            border: 1px solid rgba(255,255,255,0.25);
+            color: white;
+            background: rgba(255,255,255,0.06);
+        }
+
+        .secondary-btn:hover {
+            background: rgba(255,255,255,0.13);
+        }
+
+        /* ================= STATS ================= */
+
+        .stats {
+            display: flex;
+            gap: 45px;
+            margin-top: 55px;
+        }
+
+        .stat h3 {
+            font-size: 28px;
+            color: #a4db67;
+        }
+
+        .stat p {
+            font-size: 12px;
+            color: #aaa;
+            margin: 0;
+        }
+
+        /* ================= SECTION ================= */
+
+        section {
+            padding: 100px 7%;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title .small {
+            color: #93d455;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 12px;
+        }
+
+        .section-title h2 {
+            font-size: 45px;
+            margin-bottom: 15px;
+        }
+
+        .section-title p {
+            color: #9da79f;
+            max-width: 600px;
+            margin: auto;
+            line-height: 1.6;
+        }
+
+        /* ================= IDENTIFY ================= */
+
+        .identify-section {
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(95, 145, 60, 0.16),
+                    transparent 35%
+                ),
+                #09160f;
+        }
+
+        .identify-container {
+            max-width: 1100px;
+            margin: auto;
+
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .glass-card {
+            background: rgba(255,255,255,0.055);
+            border: 1px solid rgba(255,255,255,0.1);
+
+            border-radius: 25px;
+            padding: 35px;
+
+            backdrop-filter: blur(15px);
+
+            box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+        }
+
+        .upload-card h3,
+        .result-card h3 {
+            font-size: 25px;
+            margin-bottom: 10px;
+        }
+
+        .upload-card > p {
+            color: #9ca79f;
+            margin-bottom: 25px;
+        }
+
+        .upload-area {
+            border: 2px dashed rgba(145, 211, 79, 0.45);
+
+            border-radius: 20px;
+
+            padding: 45px 20px;
+
+            text-align: center;
+
+            background: rgba(142, 211, 79, 0.035);
+
+            cursor: pointer;
+
+            transition: 0.3s;
+        }
+
+        .upload-area:hover {
+            background: rgba(142, 211, 79, 0.09);
+        }
+
+        .upload-icon {
+            font-size: 50px;
+            margin-bottom: 12px;
+        }
+
+        .upload-area p {
+            color: #aeb7b0;
+            font-size: 14px;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .file-name {
+            margin-top: 15px;
+            color: #9dd95c;
+            font-size: 14px;
+            word-break: break-word;
+        }
+
+        .identify-btn {
+            width: 100%;
+            margin-top: 20px;
+
+            padding: 16px;
+
+            border: none;
+            border-radius: 30px;
+
+            background: #91d34e;
+            color: #10200d;
+
+            font-size: 16px;
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+        }
+
+        .identify-btn:hover {
+            background: #a9ed68;
+            transform: translateY(-2px);
+        }
+
+        .identify-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ================= RESULT ================= */
+
+        .result-card {
+            min-height: 100%;
+        }
+
+        #loading {
+            display: none;
+            text-align: center;
+            color: #a5dd62;
+            padding: 50px 10px;
+        }
+
+        .spinner {
+            width: 45px;
+            height: 45px;
+
+            border: 4px solid rgba(255,255,255,0.15);
+            border-top-color: #98d95a;
+
+            border-radius: 50%;
+
+            animation: spin 1s linear infinite;
+
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        #result {
+            display: none;
+        }
+
+        .animal-result-icon {
+            font-size: 55px;
+            margin-bottom: 10px;
+        }
+
+        .animal-name {
+            font-size: 35px;
+            margin-bottom: 5px;
+        }
+
+        .scientific {
+            color: #9bd65c;
+            font-style: italic;
+            margin-bottom: 25px;
+        }
+
+        .confidence-box {
+            background: rgba(143, 209, 79, 0.09);
+
+            padding: 15px 18px;
+            border-radius: 15px;
+
+            margin-bottom: 20px;
+        }
+
+        .confidence-top {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .confidence-value {
+            color: #9ee15b;
+            font-weight: bold;
+        }
+
+        .progress {
+            height: 7px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: #94d454;
+            border-radius: 10px;
+            transition: width 1s;
+        }
+
+        .details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .detail {
+            background: rgba(255,255,255,0.045);
+            padding: 15px;
+            border-radius: 13px;
+        }
+
+        .detail small {
+            display: block;
+            color: #7f8a83;
+            margin-bottom: 5px;
+        }
+
+        .detail strong {
+            font-size: 14px;
+            color: #e0e5e1;
+        }
+
+        .description {
+            margin-top: 20px;
+            color: #aeb7b0;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        /* ================= ANIMALS ================= */
+
+        .animals-section {
+            background: #07110b;
+        }
+
+        .animals-grid {
+            max-width: 1200px;
+            margin: auto;
+
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+
+            gap: 22px;
+        }
+
+        .animal-card {
+            position: relative;
+            height: 330px;
+
+            border-radius: 22px;
+            overflow: hidden;
+
+            background: #111;
+
+            transition: 0.4s;
+
+            cursor: pointer;
+        }
+
+        .animal-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .animal-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+
+            transition: 0.5s;
+        }
+
+        .animal-card:hover img {
+            transform: scale(1.08);
+        }
+
+        .animal-overlay {
+            position: absolute;
+            inset: 0;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+
+            padding: 25px;
+
+            background:
+                linear-gradient(
+                    transparent 30%,
+                    rgba(0,0,0,0.9)
+                );
+        }
+
+        .animal-overlay h3 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .animal-overlay p {
+            color: #a9d875;
+            font-size: 13px;
+            font-style: italic;
+        }
+
+        /* ================= HOW IT WORKS ================= */
+
+        .steps {
+            max-width: 1000px;
+            margin: auto;
+
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .step {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+
+            margin: auto auto 20px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: rgba(142, 211, 79, 0.12);
+            border: 1px solid rgba(142, 211, 79, 0.3);
+
+            color: #9add59;
+
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .step h3 {
+            margin-bottom: 10px;
+        }
+
+        .step p {
+            color: #89938d;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            padding: 60px 7% 30px;
+
+            background: #030a06;
+
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 50px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .footer-brand p {
+            color: #78827b;
+            max-width: 350px;
+            line-height: 1.6;
+            margin-top: 15px;
+        }
+
+        footer h4 {
+            margin-bottom: 18px;
+        }
+
+        footer a {
+            display: block;
+            text-decoration: none;
+            color: #78827b;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        footer a:hover {
+            color: #9bd75b;
+        }
+
+        .copyright {
+            max-width: 1200px;
+            margin: 45px auto 0;
+
+            padding-top: 25px;
+
+            border-top: 1px solid rgba(255,255,255,0.07);
+
+            text-align: center;
+
+            color: #5e6861;
+            font-size: 13px;
+        }
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 900px) {
+
+            nav ul {
+                display: none;
+            }
+
+            .hero {
+                text-align: center;
+                justify-content: center;
+            }
+
+            .hero-content {
+                max-width: 700px;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .stats {
+                justify-content: center;
+            }
+
+            .identify-container {
+                grid-template-columns: 1fr;
+            }
+
+            .animals-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .steps {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .hero h1 {
+                font-size: 50px;
+            }
+
+            .stats {
+                gap: 20px;
+            }
+
+            .animals-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .details {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            section {
+                padding: 70px 5%;
+            }
+        }
+        /* ================= WILDLIFE EXPLORER ================= */
+
+.explorer-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+    margin-top: 40px;
+}
+
+.explorer-card {
+    position: relative;
+    display: block;
+    height: 420px;
+    overflow: hidden;
+    border-radius: 20px;
+    text-decoration: none;
+    background: #14251b;
+}
+
+.explorer-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s ease;
+}
+
+.explorer-card:hover img {
+    transform: scale(1.07);
+}
+
+.explorer-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 32px;
+    color: #ffffff;
+    background: linear-gradient(
+        to top,
+        rgba(5, 15, 9, 0.95) 0%,
+        rgba(5, 15, 9, 0.45) 45%,
+        rgba(5, 15, 9, 0.05) 100%
+    );
+}
+
+.explorer-tag {
+    color: #c5d99b;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+}
+
+.explorer-overlay h3 {
+    font-size: clamp(26px, 3vw, 38px);
+    margin: 0 0 12px;
+    color: #ffffff;
+}
+
+.explorer-overlay p {
+    font-size: 15px;
+    line-height: 1.7;
+    color: #e2e8df;
+    max-width: 420px;
+    margin: 0 0 20px;
+}
+
+.explorer-link {
+    color: #d5e7ad;
+    font-size: 14px;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.explorer-card:hover .explorer-link {
+    color: #ffffff;
+}
+
+/* ================= DESTINATION SECTIONS ================= */
+
+.destination-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 50px;
+    padding: 90px 8%;
+    background: #101b14;
+}
+
+.destination-content {
+    max-width: 600px;
+}
+
+.destination-content .tag {
+    color: #b8cf87;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 18px;
+}
+
+.destination-content h2 {
+    color: #ffffff;
+    font-size: clamp(32px, 4vw, 48px);
+    line-height: 1.2;
+    margin: 0 0 22px;
+}
+
+.destination-content h2 span {
+    color: #b8cf87;
+}
+
+.destination-content > p {
+    color: #c5cec5;
+    font-size: 16px;
+    line-height: 1.9;
+    margin-bottom: 28px;
+}
+
+.destination-facts {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+    margin: 30px 0;
+}
+
+.destination-facts div {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 16px 12px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 12px;
+}
+
+.destination-facts strong {
+    color: #d5e7ad;
+    font-size: 13px;
+}
+
+.destination-facts span {
+    color: #c5cec5;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.destination-image {
+    min-height: 430px;
+    width: 100%;
+    border-radius: 20px;
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+}
+
+.mara-image {
+    background-image: url("https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=1200&q=85");
+}
+
+.amazon-image {
+    background-image: url("https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=1200&q=85");
+}
+
+.amazon-section {
+    background: #14221a;
+}
+
+/* ================= MOBILE RESPONSIVE ================= */
+
+@media (max-width: 760px) {
+    .explorer-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .explorer-card {
+        height: 360px;
+    }
+
+    .explorer-overlay {
+        padding: 24px;
+    }
+
+    .destination-section {
+        grid-template-columns: 1fr;
+        gap: 28px;
+        padding: 60px 6%;
+    }
+
+    .destination-image {
+        min-height: 300px;
+    }
+
+    .amazon-section .destination-image {
+        order: 2;
+    }
+
+    .destination-facts {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+}
+    </style>
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav>
+
+    <div class="logo">
+        <div class="logo-icon">🦁</div>
+        Wild<span>Lens</span> AI
+    </div>
+
+    <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#identify">Identify</a></li>
+        <li><a href="#animals">Animals</a></li>
+        <li><a href="#explore">Explore Places</a></li>
+        <li><a href="#how">How It Works</a></li>
+    </ul>
+
+    <a href="#identify" class="nav-button">
+        Identify Now
+    </a>
+
+</nav>
+
+
+<!-- ================= HERO ================= -->
+
+<section class="hero" id="home">
+
+    <div class="hero-content">
+
+        <div class="tag">
+            🌿 AI-Powered Wildlife Intelligence
+        </div>
+
+        <h1>
+            Discover the<br>
+            <span>Wild.</span>
+        </h1>
+
+        <p>
+            Upload a photograph and let WildLens AI identify the
+            animal in seconds. Explore its scientific identity,
+            habitat, diet, lifespan and conservation status.
+        </p>
+
+        <div class="hero-buttons">
+
+            <a href="#identify" class="primary-btn">
+                🔍 Identify an Animal
+            </a>
+
+            <a href="#animals" class="secondary-btn">
+                Explore Wildlife
+            </a>
+
+        </div>
+
+        <div class="stats">
+
+            <div class="stat">
+                <h3>99%+</h3>
+                <p>AI Confidence</p>
+            </div>
+
+            <div class="stat">
+                <h3>100+</h3>
+                <p>Species</p>
+            </div>
+
+            <div class="stat">
+                <h3>AI</h3>
+                <p>Powered</p>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= IDENTIFY ================= -->
+
+<section class="identify-section" id="identify">
+
+    <div class="section-title">
+
+        <div class="small">
+            AI Wildlife Scanner
+        </div>
+
+        <h2>Identify Any Animal</h2>
+
+        <p>
+            Upload an animal image and our AI model will analyze
+            the photograph and identify the species.
+        </p>
+
+    </div>
+
+
+    <div class="identify-container">
+
+        <!-- UPLOAD -->
+
+        <div class="glass-card upload-card">
+
+            <h3>📷 Upload Image</h3>
+
+            <p>
+                Select a clear photograph of an animal.
+            </p>
+
+            <label for="fileInput" class="upload-area">
+
+                <div class="upload-icon">
+                    📸
+                </div>
+
+                <h3>
+                    Choose an animal image
+                </h3>
+
+                <p>
+                    JPG, JPEG or PNG
+                </p>
+
+                <div class="file-name" id="fileName">
+                    No image selected
+                </div>
+
+            </label>
+
+            <div id="imagePreviewContainer" style="display:none; margin-top:16px;">
+    <img
+        id="imagePreview"
+        alt="Selected wildlife image preview"
+        style="width:100%; max-height:280px; object-fit:contain; border-radius:16px;"
+    />
+</div>
+            <input
+                type="file"
+                id="fileInput"
+                accept="image/*"
+            >
+
+            <button
+                class="identify-btn"
+                id="identifyButton"
+                disabled
+            >
+                🔍 Identify Animal
+            </button>
+
+        </div>
+
+
+        <!-- RESULT -->
+
+        <div class="glass-card result-card">
+
+            <div id="emptyResult">
+
+                <div style="font-size:60px; margin-bottom:15px;">
+                    🐾
+                </div>
+
+                <h3>AI Result</h3>
+
+                <p style="color:#89938d; line-height:1.6; margin-top:10px;">
+                    Your animal identification result will appear
+                    here after uploading an image.
+                </p>
+
+            </div>
+
+
+            <div id="loading">
+
+                <div class="spinner"></div>
+
+                <h3>
+                    Analyzing image...
+                </h3>
+
+                <p style="color:#89938d; margin-top:10px;">
+                    WildLens AI is identifying the animal.
+                </p>
+
+            </div>
+
+
+            <div id="result">
+
+                <div class="animal-result-icon">
+                    🦁
+                </div>
+
+                <div class="animal-name" id="animalName">
+                    African Lion
+                </div>
+
+                <div class="scientific" id="scientificName">
+                    Panthera leo
+                </div>
+
+
+                <div class="confidence-box">
+
+                    <div class="confidence-top">
+
+                        <span>
+                            AI Confidence
+                        </span>
+
+                        <span
+                            class="confidence-value"
+                            id="confidence"
+                        >
+                            99.91%
+                        </span>
+
+                    </div>
+
+                    <div class="progress">
+
+                        <div
+                            class="progress-bar"
+                            id="progressBar"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="details">
+
+                    <div class="detail">
+                        <small>Habitat</small>
+                        <strong id="habitat">-</strong>
+                    </div>
+
+                    <div class="detail">
+                        <small>Diet</small>
+                        <strong id="diet">-</strong>
+                    </div>
+
+                    <div class="detail">
+                        <small>Lifespan</small>
+                        <strong id="lifespan">-</strong>
+                    </div>
+
+                    <div class="detail">
+                        <small>Conservation</small>
+                        <strong id="conservation">-</strong>
+                    </div>
+
+                    <div class="detail">
+                        <small>Geographic Range</small>
+                        <strong id="range">-</strong>
+                    </div>
+
+                </div>
+
+
+                <div class="description">
+
+                    <strong>Description</strong>
+
+                    <p id="description">
+                        -
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= ANIMALS ================= -->
+
+<section class="animals-section" id="animals">
+
+    <div class="section-title">
+
+        <div class="small">
+            Wildlife Collection
+        </div>
+
+        <h2>Explore the Wild</h2>
+
+        <p>
+            Discover some of the incredible animals that
+            WildLens AI can recognize.
+        </p>
+
+    </div>
+
+
+    <div class="animals-grid">
+
+        <div class="animal-card">
+
+            <img
+                src="https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=900&q=80"
+                alt="Lion"
+            >
+
+            <div class="animal-overlay">
+
+                <h3>🦁 Lion</h3>
+
+                <p>Panthera leo</p>
+
+            </div>
+
+        </div>
+
+
+        <div class="animal-card">
+
+            <img
+                src="https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?auto=format&fit=crop&w=900&q=80"
+                alt="Elephant"
+            >
+
+            <div class="animal-overlay">
+
+                <h3>🐘 Elephant</h3>
+
+                <p>Loxodonta africana</p>
+
+            </div>
+
+        </div>
+
+
+        <div class="animal-card">
+
+            <img
+                src="https://images.unsplash.com/photo-1549366021-9f761d450615?auto=format&fit=crop&w=900&q=80"
+                alt="Giraffe"
+            >
+
+            <div class="animal-overlay">
+
+                <h3>🦒 Giraffe</h3>
+
+                <p>Giraffa camelopardalis</p>
+
+            </div>
+
+        </div>
+
+
+        <div class="animal-card">
+
+            <img
+                src="https://images.unsplash.com/photo-1526095179574-86e545346ae6?auto=format&fit=crop&w=900&q=80"
+                alt="Zebra"
+            >
+
+            <div class="animal-overlay">
+
+                <h3>🦓 Zebra</h3>
+
+                <p>Equus quagga</p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+/* ================= WILDLIFE EXPLORER ================= */
+
+.explorer-grid {
+    max-width: 1100px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px;
+}
+
+.explorer-card {
+    position: relative;
+    display: block;
+    min-height: 440px;
+    overflow: hidden;
+    border-radius: 24px;
+    border: 1px solid rgba(255,255,255,.12);
+    color: white;
+    text-decoration: none;
+    background: #102017;
+}
+
+.explorer-card img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .6s ease;
+}
+
+.explorer-card:hover img {
+    transform: scale(1.06);
+}
+
+.explorer-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 32px;
+    background: linear-gradient(
+        transparent 5%,
+        rgba(3,12,7,.35) 35%,
+        rgba(3,12,7,.96) 100%
+    );
+}
+
+.explorer-tag {
+    color: #b8e987;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.explorer-overlay h3 {
+    margin-top: 12px;
+    font-size: clamp(28px, 3vw, 40px);
+}
+
+.explorer-overlay p {
+    margin: 12px 0 20px;
+    color: #d5ded6;
+    line-height: 1.7;
+}
+
+.explorer-link {
+    color: #a8e66b;
+    font-weight: bold;
+}
+
+.destination-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 50px;
+    background: #07130d;
+}
+
+.destination-content h2 {
+    margin: 22px 0;
+    font-size: clamp(36px, 5vw, 58px);
+    line-height: 1.08;
+}
+
+.destination-content h2 span {
+    color: #9bd75b;
+}
+
+.destination-content > p {
+    max-width: 570px;
+    margin-bottom: 28px;
+    color: #c4cec5;
+    line-height: 1.8;
+}
+
+.destination-facts {
+    display: grid;
+    gap: 0;
+    margin-bottom: 30px;
+}
+
+.destination-facts div {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(255,255,255,.12);
+}
+
+.destination-facts strong {
+    color: #a7dc72;
+}
+
+.destination-facts span {
+    color: #d1d9d2;
+    text-align: right;
+}
+
+.destination-image {
+    min-height: 420px;
+    border-radius: 24px;
+    background-size: cover;
+    background-position: center;
+    border: 1px solid rgba(255,255,255,.12);
+}
+
+.mara-image {
+    background-image: url("https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=1200&q=85");
+}
+
+.amazon-image {
+    background-image: url("https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=1200&q=85");
+}
+
+.amazon-section {
+    background: #0a1910;
+}
+
+@media (max-width: 760px) {
+    .explorer-grid,
+    .destination-section {
+        grid-template-columns: 1fr;
+    }
+
+    .explorer-card {
+        min-height: 360px;
+    }
+
+    .destination-image {
+        min-height: 300px;
+    }
+
+    .amazon-section .destination-image {
+        order: 2;
+    }
+}
+
+<!-- ================= WILDLIFE EXPLORER ================= -->
+<section id="explore" class="identify-section">
+    <div class="section-title">
+        <div class="small">EXPLORE THE WORLD</div>
+        <h2>Choose Your Wild</h2>
+        <p>Journey through extraordinary ecosystems and discover the wildlife that calls them home.</p>
+    </div>
+
+    <div class="explorer-grid">
+        <a href="#masai-mara" class="explorer-card">
+            <img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=1200&q=85"
+                 alt="African wildlife in the savanna">
+            <div class="explorer-overlay">
+                <span class="explorer-tag">KENYA · AFRICA</span>
+                <h3>Masai Mara</h3>
+                <p>Golden grasslands, powerful big cats and the spectacular Great Migration.</p>
+                <span class="explorer-link">Explore destination ↗</span>
+            </div>
+        </a>
+
+        <a href="#amazon" class="explorer-card">
+            <img src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=1200&q=85"
+                 alt="Lush tropical rainforest">
+            <div class="explorer-overlay">
+                <span class="explorer-tag">SOUTH AMERICA</span>
+                <h3>Amazon Rainforest</h3>
+                <p>Discover a vast tropical ecosystem filled with extraordinary biodiversity.</p>
+                <span class="explorer-link">Explore destination ↗</span>
+            </div>
+        </a>
+    </div>
+</section>
+
+<!-- ================= MASAI MARA ================= -->
+<section id="masai-mara" class="destination-section">
+    <div class="destination-content">
+        <div class="tag">01 · AFRICAN SAVANNA</div>
+        <h2>Into the <span>Masai Mara</span></h2>
+        <p>Explore Kenya's iconic savanna, home to lions, elephants, leopards, giraffes and plains zebras.</p>
+
+        <div class="destination-facts">
+            <div><strong>Habitat</strong><span>Savanna &amp; grassland</span></div>
+            <div><strong>Region</strong><span>Southwestern Kenya</span></div>
+            <div><strong>Wildlife</strong><span>Big cats &amp; grazers</span></div>
+        </div>
+
+        <a href="#animals" class="primary-btn">Discover the animals</a>
+    </div>
+
+    <div class="destination-image mara-image" role="img"
+         aria-label="African savanna habitat"></div>
+</section>
+
+<!-- ================= AMAZON RAINFOREST ================= -->
+<section id="amazon" class="destination-section amazon-section">
+    <div class="destination-image amazon-image" role="img"
+         aria-label="Dense Amazon rainforest"></div>
+
+    <div class="destination-content">
+        <div class="tag">02 · TROPICAL RAINFOREST</div>
+        <h2>Enter the <span>Amazon</span></h2>
+        <p>Discover the habitats of jaguars, sloths, toucans, macaws and countless other species.</p>
+
+        <div class="destination-facts">
+            <div><strong>Habitat</strong><span>Tropical rainforest</span></div>
+            <div><strong>Region</strong><span>South America</span></div>
+            <div><strong>Wildlife</strong><span>Jaguars &amp; canopy life</span></div>
+        </div>
+
+        <a href="#animals" class="primary-btn">Discover the animals</a>
+    </div>
+</section>
+
+
+
+
+
+<!-- ================= HOW IT WORKS ================= -->
+
+<section id="how">
+
+    <div class="section-title">
+
+        <div class="small">
+            Simple & Intelligent
+        </div>
+
+        <h2>How WildLens Works</h2>
+
+        <p>
+            Identify wildlife in three simple steps.
+        </p>
+
+    </div>
+
+
+    <div class="steps">
+
+        <div class="step">
+
+            <div class="step-number">
+                01
+            </div>
+
+            <h3>Upload</h3>
+
+            <p>
+                Choose a photograph of the animal
+                you want to identify.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">
+                02
+            </div>
+
+            <h3>AI Analysis</h3>
+
+            <p>
+                Our AI vision model analyzes the
+                image and predicts the species.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">
+                03
+            </div>
+
+            <h3>Discover</h3>
+
+            <p>
+                Get detailed information about
+                the animal and its conservation.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <div class="footer-grid">
+
+        <div class="footer-brand">
+
+            <div class="logo">
+                🦁 Wild<span>Lens</span> AI
+            </div>
+
+            <p>
+                AI-powered wildlife identification and
+                conservation intelligence platform.
+            </p>
+
+        </div>
+
+
+        <div>
+
+            <h4>Explore</h4>
+
+            <a href="#home">Home</a>
+            <a href="#identify">Identify Animal</a>
+            <a href="#animals">Animals</a>
+
+        </div>
+
+
+        <div>
+
+            <h4>Platform</h4>
+
+            <a href="#how">How It Works</a>
+            <a href="#identify">AI Scanner</a>
+
+        </div>
+
+
+        <div>
+
+            <h4>WildLens</h4>
+
+            <a href="#">About</a>
+            <a href="#">GitHub</a>
+            <a href="#">Contact</a>
+
+        </div>
+
+    </div>
+
+
+    <div class="copyright">
+
+        © 2026 WildLens AI · Built for wildlife exploration and conservation 🌿
+
+    </div>
+
+</footer>
+
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script>
+
+    const API_URL = "http://127.0.0.1:8001";
+
+    const fileInput = document.getElementById("fileInput");
+
+    const fileName = document.getElementById("fileName");
+
+    const identifyButton =
+        document.getElementById("identifyButton");
+
+    const loading =
+        document.getElementById("loading");
+
+    const result =
+        document.getElementById("result");
+
+    const emptyResult =
+        document.getElementById("emptyResult");
+
+
+    /* ================= FILE SELECTION ================= */
+
+
+fileInput.addEventListener("change", function () {
+    const file = fileInput.files[0];
+    const previewContainer =
+        document.getElementById("imagePreviewContainer");
+    const preview = document.getElementById("imagePreview");
+
+    if (!file) {
+        fileName.textContent = "No image selected";
+        identifyButton.disabled = true;
+        previewContainer.style.display = "none";
+        preview.removeAttribute("src");
+        return;
+    }
+
+    if (!file.type.startsWith("image/")) {
+        alert("Please select an image file.");
+        fileInput.value = "";
+        fileName.textContent = "No image selected";
+        identifyButton.disabled = true;
+        previewContainer.style.display = "none";
+        return;
+    }
+
+    if (file.size > 10 * 1024 * 1024) {
+        alert("Please select an image smaller than 10 MB.");
+        fileInput.value = "";
+        fileName.textContent = "No image selected";
+        identifyButton.disabled = true;
+        previewContainer.style.display = "none";
+        return;
+    }
+
+    fileName.textContent = "Selected: " + file.name;
+    preview.src = URL.createObjectURL(file);
+    previewContainer.style.display = "block";
+    identifyButton.disabled = false;
+});
+
+
+
+    /* ================= IDENTIFY ================= */
+
+    identifyButton.addEventListener("click", async function () {
+
+        if (!fileInput.files.length) {
+
+            alert("Please select an animal image first.");
+
+            return;
+
+        }
+
+
+        const file = fileInput.files[0];
+
+        const formData = new FormData();
+
+        formData.append("file", file);
+
+
+        /* Hide old result */
+
+        emptyResult.style.display = "none";
+
+        result.style.display = "none";
+
+        loading.style.display = "block";
+
+        identifyButton.disabled = true;
+
+
+        try {
+
+            const response = await fetch(
+                `${API_URL}/predict`,
+                {
+                    method: "POST",
+                    body: formData
+                }
+            );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    `Server returned ${response.status}`
+                );
+
+            }
+
+
+            const data = await response.json();
+
+
+            console.log("WildLens AI response:", data);
+
+
+            /* ================= DISPLAY DATA ================= */
+
+            document.getElementById("animalName").textContent =
+                data.animal || "Unknown Animal";
+
+
+            document.getElementById("scientificName").textContent =
+                data.scientific_name || "Scientific name unavailable";
+
+
+            const confidence =
+                Number(data.confidence || 0);
+
+
+            const percentage =
+                confidence <= 1
+                    ? confidence * 100
+                    : confidence;
+
+
+            document.getElementById("confidence").textContent =
+                percentage.toFixed(2) + "%";
+
+
+            document.getElementById("progressBar").style.width =
+                percentage + "%";
+
+
+            document.getElementById("description").textContent =
+                data.description || "No description available.";
+
+
+            document.getElementById("habitat").textContent =
+                data.habitat || "Unknown";
+
+
+            document.getElementById("diet").textContent =
+                data.diet || "Unknown";
+
+
+            document.getElementById("lifespan").textContent =
+                data.lifespan || "Unknown";
+
+
+            document.getElementById("conservation").textContent =
+                data.conservation_status || "Unknown";
+
+
+            document.getElementById("range").textContent =
+                data.geographic_range || "Unknown";
+
+
+            /* Show result */
+
+            loading.style.display = "none";
+
+            result.style.display = "block";
+
+            identifyButton.disabled = false;
+
+
+            /* Scroll slightly toward result */
+
+            setTimeout(() => {
+
+                result.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
+
+            }, 200);
+
+
+        } catch (error) {
+
+            console.error("WildLens error:", error);
+
+
+            loading.style.display = "none";
+
+            emptyResult.style.display = "block";
+
+            identifyButton.disabled = false;
+
+
+            alert(
+                "Could not connect to WildLens AI backend.\n\n" +
+                "Make sure your FastAPI server is running on:\n" +
+                API_URL
+            );
+
+        }
+
+    });
+
+</script>
+
+</body>
+</html>
